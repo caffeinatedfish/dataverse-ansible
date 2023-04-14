@@ -29,7 +29,7 @@
 
 - name: Add CRAN repo
   apt_repository:
-    repo: https://cloud.r-project.org/bin/linux/ubuntu focal-cran40
+    repo: deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/
     state: present
   when: ansible_os_family == "Debian"        
 
