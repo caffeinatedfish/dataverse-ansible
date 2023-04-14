@@ -12,7 +12,7 @@ any_errors_fatal: false
 
 apache:
   enabled: true
-  public_fqdn: 
+  public_fqdn: spinup-0020ea.spinup.yale.edu
   ssl:
     enabled: false
     remote_cert: false

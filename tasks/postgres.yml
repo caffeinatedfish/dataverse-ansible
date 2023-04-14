@@ -35,6 +35,18 @@
     state: present
   when: ansible_os_family == "RedHat"
 
+- name: import gpg-key
+  apt_key:
+    state: present
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+  when: ansible_os_family == "Debian"
+
+- name: install postgres repo deb
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main
+    state: present
+  when: ansible_os_family == "Debian"  
+
 - name: "RHEL/Rocky8: disable PostgreSQL proper in the OS"
   shell: 'dnf -qy module disable postgresql'
   when: ansible_os_family == "RedHat" and
