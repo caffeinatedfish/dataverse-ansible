@@ -43,6 +43,8 @@ Listen {{ apache.ssl.port }} https
     SSLEngine on
     SSLProtocol -all +TLSv1.2 +TLSv1.3
     SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
+    SSLCertificateFile /home/ke225/server.crt
+    SSLCertificateKeyFile /home/ke225/server.key
   {% if apache.ssl.remote_cert %}
     SSLCertificateFile {{ apache.ssl.cert }}
     SSLCertificateKeyFile {{ apache.ssl.key }}
