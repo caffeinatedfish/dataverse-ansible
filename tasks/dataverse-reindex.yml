@@ -1,0 +1,14 @@
+- name: Clear Solr index
+  uri:
+    url: "http://localhost:8080/api/admin/index/clear"
+    method: GET
+    status_code: 200
+  register: clear_result
+
+- name: Start Solr reindexing
+  uri:
+    url: "http://localhost:8080/api/admin/index"
+    method: GET
+    status_code: 200
+  register: reindex_result
+
