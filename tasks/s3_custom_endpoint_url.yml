@@ -6,6 +6,14 @@
 - name: set s3 custom endpoint url
   shell: '{{ payara_dir}}/bin/asadmin create-jvm-options "-Ddataverse.files.s3.custom-endpoint-url={{ custom_endpoint_escaped }}"'
 
+- name: place s3_cors.json template
+  template:
+    src: s3_cors.json.j2
+    dest: "/home/{{ dataverse.payara.user }}/s3_cors.json"
+    owner: "{{ dataverse.payara.user }}"
+    group: "{{ dataverse.payara.group }}"
+    mode: "0644"
+
 - name: create S3 bucket
   shell:
     'aws s3api create-bucket --bucket {{ s3.bucket_name }} --endpoint-url {{ s3.custom_endpoint_url }}'
