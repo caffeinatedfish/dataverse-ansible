@@ -8,18 +8,18 @@ dataverse_repo: https://github.com/IQSS/dataverse.git
 # dataverse_installer_url: https://example.com/path/to/dvinstall.zip
 
 # set this to true for troubleshooting
-any_errors_fatal: false
+#any_errors_fatal: false
 
 apache:
   enabled: true
-  public_fqdn: spinup-0020ea.spinup.yale.edu
+  public_fqdn: "{{ public_fqdn }}"
   ssl:
-    enabled: false
+    enabled: true
     remote_cert: false
     port: 443
-    cert: 
+    cert: "{{ apache_ssl_cert }}"
     interm: 
-    key: 
+    key: "{{ apache_ssl_key }}"
     pem:
       cert: 
       key: 
@@ -38,11 +38,11 @@ letsencrypt:
   enabled: false
   certbot:
     autorenew: true
-    email:
-    user: certbot
+    email: "{{ email }}"
+    user: "{{ user }}"
 
 dataverse:
-  adminpass: admin1
+  adminpass: "{{ adminpass }}"
   allow_signups: true
   api:
     allow_lookup: false
@@ -67,7 +67,7 @@ dataverse:
        file: topbanner001w425_darkbg.png'
     otherSettings:
      - setting: FooterCopyright
-       value: Your institute name here
+       value: Yale University
   language:
     enabled: false # setting this to true allows the language task to run
     languages:
@@ -125,7 +125,7 @@ dataverse:
        iconUrl: https://licensebuttons.net/l/by-sa/4.0/88x31.png
        active: true
        sortOrder: 7
-  copyright: "Your Institution"
+  copyright: "Yale University"
   counter:
     enabled: false
     #geoipdir: maxmind_geoip
@@ -158,9 +158,9 @@ dataverse:
     baseurl: "https://mds.test.datacite.org/"
     dataciterestapiurl: "https://api.test.datacite.org"
     mdcbaseurl: "https://api.test.datacite.org/"
-    provider: FAKE
-    username: "testaccount"
-    password: "notmypassword"
+    provider: "{{ pid_provider }}"
+    username: "{{ pid_username }}"
+    password: "{{ pid_password }}"
   ## Handlenet variables are only used if dataverse.pid.protocol is set to 'hdl'
   handlenet:
     independenthandleservice: 'false'
@@ -193,8 +193,8 @@ dataverse:
     domain: domain1
     logformat: ulf
     adminuser: admin
-    adminpass: notPr0d
-    siteurl:
+    adminpass: "{{ adminpass }}"
+    siteurl: "{{ site_url }}"
     launch_timeout: 180
     request_timeout: 1800
     root: /usr/local
@@ -231,7 +231,7 @@ dataverse:
     custom_sampledataverses: "{{ playbook_dir }}/custom_sampledata/dataverses"
     custom_sampleusers: "{{ playbook_dir }}/custom_sampledata/users"
     custom_samplefiles: "{{ playbook_dir }}/custom_sampledata/files"
-  service_email: noreply@dataverse.yourinstitution.edu
+  service_email: "{{ service_email }}"
   smtp: localhost # or the FQDN of your organization's SMTP relay
   solr:
     group: solr
@@ -264,7 +264,7 @@ db:
     version: 13
     port: 5432
   backups:
-    enabled: false
+    enabled: true
     rootdir: /opt/pg_backups
     backupdir: backups
     host: localhost
@@ -322,27 +322,27 @@ rserve:
   workdir: /tmp/Rserv
 
 s3:
-  enabled: false
-  access_key: 4cc355_k3y
-  secret_access_key: s3cr3t_4cc355_k3y
-  bucket_name: s3-test
+  enabled: true
+  access_key: "{{ access_key }}"
+  secret_access_key: "{{ secret_access_key }}"
+  bucket_name: "{{ bucket_name }}"
   cors_already_set: false
-  create_bucket: true
+  create_bucket: false
   # for non-amazon services. for localstack, you might set
   #custom_endpoint_url: "http://localhost:4572"
-  custom_endpoint_url:
+  custom_endpoint_url: "{{ custom_endpoint_url }}"
   # note: direct upload and download require CORS on the bucket
   download_redirect: true
   upload_redirect: true
   files_type: s3
   ingestsizelimit:
-  label: s3-test
+  label: s3-dataverse
   # for localstack this must be true
-  path_style_access: true
+  path_style_access: false
   region: us-east-1
   storage_driver_id: s3
   url_expiration_minutes: 60
-  payload_signing: false
+  payload_signing: true
   chunked_encoding: true
 
 schemaspy:
@@ -350,10 +350,10 @@ schemaspy:
   jarurl: https://github.com/schemaspy/schemaspy/releases/download/v6.1.0/schemaspy-6.1.0.jar
 
 shibboleth:
-  enabled: false
-  email: TODO
-  organizationName: TODO
-  organizationalUnitName: TODO
+  enabled: true
+  email: yale.edu
+  organizationName: yale university
+  organizationalUnitName: FTS
   requestedAttributes:
 # the ones marked Required seem to be really required by dataverse
    - '<md:RequestedAttribute FriendlyName="eduPersonPrincipalName" Name="urn:oid:1.3.6.1.4.1.5923.1.1.1.6" isRequired="true"/>'
@@ -362,10 +362,10 @@ shibboleth:
    - '<md:RequestedAttribute FriendlyName="sn" Name="urn:oid:2.5.4.4" isRequired="true"/>'
    - '<md:RequestedAttribute FriendlyName="eduPersonScopedAffiliation" Name="urn:oid:1.3.6.1.4.1.5923.1.1.1.9" />'
 #   - '<md:RequestedAttribute FriendlyName="affiliation" Name="urn:oid:1.3.6.1.4.1.5923.1.1.1.9" />'
-  organizationDisplayName: TODO
-  organizationURL: TODO
+  organizationDisplayName: Yale University
+  organizationURL: "{{ organization_url }}"
   UIInfo: []
-## this is an example below
+  ## this is an example below
 #    - lang: en
 #      DisplayName: TODO
 #      Description: TODO
@@ -390,7 +390,7 @@ shibboleth:
 #      surName: TODO
 #      emailAddress: TODO
   SSO: "<SSO>SAML2 SAML1</SSO>"
-  MetadataProvider: '<MetadataProvider type="XML" file="dataverse-idp-metadata.xml" backingFilePath="local-idp-metadata.xml" legacyOrgNames="true" reloadInterval="7200"/>'
+  MetadataProvider: '<MetadataProvider type="XML" file="idp-yale-metadata.xml" backingFilePath="idp-yale-metadata.xml" reloadInterval="7200"/>'
 
 sshkeys:
   enabled: false
