@@ -91,7 +91,6 @@
     name: "{{ item }}"
     ignore_configcheck: true
   with_items:
-    - redirect
     - rewrite
     - ssl
   when: ansible_os_family == "Debian"    ## CHECKME -- does this need to be Debian-specific?

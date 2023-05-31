@@ -174,4 +174,8 @@
   - schemaspy
 
 - include: fin.yml
-  
+
+- include: dataverse-reindex.yml
+  tags:
+  - solr
+  - reindex  

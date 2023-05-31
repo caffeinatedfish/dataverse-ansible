@@ -2,3 +2,7 @@ venv
 .vagrant/
 /.idea
 /*.iml
+defaults/main.yml
+server.crt
+server.key
+defaults/test-email.txt
